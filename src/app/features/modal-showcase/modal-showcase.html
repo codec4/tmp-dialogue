@@ -1,0 +1,417 @@
+<main class="min-h-dvh bg-stone-50 text-zinc-950">
+  <div class="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-5 sm:px-6 lg:px-8">
+    <header class="flex flex-col gap-4 border-b border-zinc-200 pb-5 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <p class="text-sm font-medium text-teal-700">Native dialog modal</p>
+        <h1 class="mt-1 text-3xl font-semibold tracking-normal text-zinc-950">Angular Tailwind modal system</h1>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button
+          type="button"
+          class="rounded-md bg-teal-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+          [dialogTriggerFor]="primaryModal"
+        >
+          Open trigger
+        </button>
+        <button
+          type="button"
+          class="rounded-md border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+          (click)="openFromState()"
+        >
+          Open state
+        </button>
+      </div>
+    </header>
+
+    <section class="grid gap-5 lg:grid-cols-[minmax(18rem,24rem)_1fr]">
+      <aside class="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+        <div class="space-y-5">
+          <div>
+            <h2 class="text-sm font-semibold text-zinc-900">Size</h2>
+            <div class="mt-3 grid grid-cols-3 gap-2">
+              @for (option of sizes; track option) {
+                <button
+                  type="button"
+                  class="rounded-md border px-3 py-2 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  [class.border-teal-700]="size() === option"
+                  [class.bg-teal-700]="size() === option"
+                  [class.text-white]="size() === option"
+                  [class.border-zinc-300]="size() !== option"
+                  [class.bg-white]="size() !== option"
+                  [class.text-zinc-800]="size() !== option"
+                  (click)="setSize(option)"
+                >
+                  {{ option }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <div>
+            <h2 class="text-sm font-semibold text-zinc-900">Placement</h2>
+            <div class="mt-3 grid grid-cols-2 gap-2">
+              @for (option of placements; track option) {
+                <button
+                  type="button"
+                  class="rounded-md border px-3 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  [class.border-teal-700]="placement() === option"
+                  [class.bg-teal-700]="placement() === option"
+                  [class.text-white]="placement() === option"
+                  [class.border-zinc-300]="placement() !== option"
+                  [class.bg-white]="placement() !== option"
+                  [class.text-zinc-800]="placement() !== option"
+                  (click)="setPlacement(option)"
+                >
+                  {{ option }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <div>
+            <h2 class="text-sm font-semibold text-zinc-900">Motion</h2>
+            <div class="mt-3 grid grid-cols-2 gap-2">
+              @for (option of animations; track option) {
+                <button
+                  type="button"
+                  class="rounded-md border px-3 py-2 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  [class.border-teal-700]="animation() === option"
+                  [class.bg-teal-700]="animation() === option"
+                  [class.text-white]="animation() === option"
+                  [class.border-zinc-300]="animation() !== option"
+                  [class.bg-white]="animation() !== option"
+                  [class.text-zinc-800]="animation() !== option"
+                  (click)="setAnimation(option)"
+                >
+                  {{ option }}
+                </button>
+              }
+            </div>
+            <label class="mt-4 block text-xs font-medium text-zinc-700" for="animation-ms">Open duration</label>
+            <input
+              id="animation-ms"
+              type="range"
+              min="0"
+              max="600"
+              step="20"
+              class="mt-2 w-full accent-teal-700"
+              [value]="animationMs()"
+              (input)="setAnimationMs($event)"
+            />
+            <p class="mt-1 text-xs text-zinc-500">{{ animationMs() }}ms</p>
+            <label class="mt-3 block text-xs font-medium text-zinc-700" for="close-animation-ms">Close duration</label>
+            <input
+              id="close-animation-ms"
+              type="range"
+              min="0"
+              max="180"
+              step="10"
+              class="mt-2 w-full accent-teal-700"
+              [value]="closeAnimationMs()"
+              (input)="setCloseAnimationMs($event)"
+            />
+            <p class="mt-1 text-xs text-zinc-500">{{ closeAnimationMs() }}ms</p>
+          </div>
+
+          <div>
+            <h2 class="text-sm font-semibold text-zinc-900">Backdrop</h2>
+            <div class="mt-3 grid grid-cols-2 gap-2">
+              @for (option of backdrops; track option) {
+                <button
+                  type="button"
+                  class="rounded-md border px-3 py-2 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  [class.border-teal-700]="backdrop() === option"
+                  [class.bg-teal-700]="backdrop() === option"
+                  [class.text-white]="backdrop() === option"
+                  [class.border-zinc-300]="backdrop() !== option"
+                  [class.bg-white]="backdrop() !== option"
+                  [class.text-zinc-800]="backdrop() !== option"
+                  (click)="setBackdrop(option)"
+                >
+                  {{ option }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <div>
+            <h2 class="text-sm font-semibold text-zinc-900">Close policy</h2>
+            <div class="mt-3 space-y-2">
+              <button
+                type="button"
+                class="flex w-full items-center justify-between rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-800 transition hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                (click)="toggleBackdrop()"
+              >
+                <span>Backdrop click</span>
+                <span class="rounded bg-zinc-100 px-2 py-1 text-xs">{{ closeOnBackdrop() ? 'on' : 'off' }}</span>
+              </button>
+              <button
+                type="button"
+                class="flex w-full items-center justify-between rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-800 transition hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                (click)="toggleEscape()"
+              >
+                <span>Escape key</span>
+                <span class="rounded bg-zinc-100 px-2 py-1 text-xs">{{ closeOnEscape() ? 'on' : 'off' }}</span>
+              </button>
+              <button
+                type="button"
+                class="flex w-full items-center justify-between rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-800 transition hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                (click)="toggleAllowClose()"
+              >
+                <span>{{ guardLabel() }}</span>
+                <span class="rounded bg-zinc-100 px-2 py-1 text-xs">{{ allowClose() ? 'allow' : 'block' }}</span>
+              </button>
+            </div>
+            <div class="mt-3 grid grid-cols-3 gap-2">
+              @for (option of guardModes; track option) {
+                <button
+                  type="button"
+                  class="rounded-md border px-3 py-2 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  [class.border-teal-700]="guardMode() === option"
+                  [class.bg-teal-700]="guardMode() === option"
+                  [class.text-white]="guardMode() === option"
+                  [class.border-zinc-300]="guardMode() !== option"
+                  [class.bg-white]="guardMode() !== option"
+                  [class.text-zinc-800]="guardMode() !== option"
+                  (click)="setGuardMode(option)"
+                >
+                  {{ option }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <div>
+            <h2 class="text-sm font-semibold text-zinc-900">Scrolling</h2>
+            <div class="mt-3 grid grid-cols-2 gap-2">
+              @for (option of scrollModes; track option) {
+                <button
+                  type="button"
+                  class="rounded-md border px-3 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  [class.border-teal-700]="scroll() === option"
+                  [class.bg-teal-700]="scroll() === option"
+                  [class.text-white]="scroll() === option"
+                  [class.border-zinc-300]="scroll() !== option"
+                  [class.bg-white]="scroll() !== option"
+                  [class.text-zinc-800]="scroll() !== option"
+                  (click)="setScroll(option)"
+                >
+                  {{ option }}
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="flex min-h-[34rem] flex-col gap-5">
+        <div class="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h2 class="text-lg font-semibold text-zinc-950">Current modal state</h2>
+              <p class="mt-1 text-sm text-zinc-600">{{ lastEvent() }}</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button
+                type="button"
+                class="rounded-md border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+                (click)="requestApiClose()"
+              >
+                API close
+              </button>
+              <button
+                type="button"
+                class="rounded-md border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+                (click)="primaryModal.requestNativeClose('native-request')"
+              >
+                requestClose()
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <div class="rounded-md border border-zinc-200 bg-stone-50 p-3">
+              <p class="text-xs font-medium text-zinc-500">Size</p>
+              <p class="mt-1 text-sm font-semibold text-zinc-950">{{ size() }}</p>
+            </div>
+            <div class="rounded-md border border-zinc-200 bg-stone-50 p-3">
+              <p class="text-xs font-medium text-zinc-500">Placement</p>
+              <p class="mt-1 text-sm font-semibold text-zinc-950">{{ placement() }}</p>
+            </div>
+            <div class="rounded-md border border-zinc-200 bg-stone-50 p-3">
+              <p class="text-xs font-medium text-zinc-500">Animation</p>
+              <p class="mt-1 text-sm font-semibold text-zinc-950">{{ animation() }}</p>
+            </div>
+            <div class="rounded-md border border-zinc-200 bg-stone-50 p-3">
+              <p class="text-xs font-medium text-zinc-500">Backdrop</p>
+              <p class="mt-1 text-sm font-semibold text-zinc-950">{{ backdrop() }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid flex-1 place-items-center rounded-lg border border-dashed border-zinc-300 bg-white p-8 text-center">
+          <div class="max-w-md">
+            <p class="text-sm font-medium text-teal-700">Top layer preview</p>
+            <h2 class="mt-2 text-2xl font-semibold text-zinc-950">Open the modal to inspect the active configuration.</h2>
+            <div class="mt-5 flex justify-center gap-2">
+              <button
+                type="button"
+                class="rounded-md bg-teal-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+                [dialogTriggerFor]="primaryModal"
+              >
+                Open modal
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <dialog
+    dialogModal
+    #primaryModal="dialogModal"
+    [(dialogOpen)]="primaryOpen"
+    [dialogSize]="size()"
+    [dialogPlacement]="placement()"
+    [dialogAnimation]="animation()"
+    [dialogBackdrop]="backdrop()"
+    [dialogScroll]="scroll()"
+    [dialogCloseOnBackdrop]="closeOnBackdrop()"
+    [dialogCloseOnEscape]="closeOnEscape()"
+    [dialogAnimationMs]="animationMs()"
+    [dialogCloseAnimationMs]="closeAnimationMs()"
+    [dialogCanClose]="closeGuard()"
+    (dialogCloseRequested)="onCloseRequested($event)"
+    (dialogCloseBlocked)="onCloseBlocked($event)"
+    (dialogClosed)="onClosed($event)"
+  >
+    <ng-template dialogModalHeader>
+      <div>
+        <h2 class="text-lg font-semibold text-zinc-950">Project settings</h2>
+        <p class="mt-1 text-sm text-zinc-600">Signal-first inputs, native dialog close events, and Tailwind variants.</p>
+      </div>
+      <button
+        type="button"
+        class="rounded-md p-2 text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900 focus:outline-none focus:ring-2 focus:ring-teal-500"
+        aria-label="Close settings"
+        dialogClose="icon-close"
+      >
+        <span aria-hidden="true" class="block text-xl leading-none">&times;</span>
+      </button>
+    </ng-template>
+
+    <ng-template
+      dialogModalBody
+      [dialogModalBodyScroll]="scroll() === 'inside'"
+    >
+      <div class="grid gap-4 sm:grid-cols-2">
+        <label class="block">
+          <span class="text-sm font-medium text-zinc-700">Workspace name</span>
+          <input
+            class="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-950 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-200"
+            value="Dialogue Angular"
+          />
+        </label>
+        <label class="block">
+          <span class="text-sm font-medium text-zinc-700">Environment</span>
+          <input
+            class="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-950 outline-none transition focus:border-teal-600 focus:ring-2 focus:ring-teal-200"
+            value="Preview"
+          />
+        </label>
+      </div>
+
+      <div class="rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
+        Toggle the guard to block close attempts from Escape, backdrop, buttons, forms, and API calls.
+      </div>
+
+      <div class="grid gap-3">
+        @for (item of [1, 2, 3, 4, 5, 6]; track item) {
+          <div class="rounded-md border border-zinc-200 bg-stone-50 p-4">
+            <p class="text-sm font-semibold text-zinc-950">Configurable content row {{ item }}</p>
+            <p class="mt-1 text-sm text-zinc-600">
+              This row keeps the inside/outside scrolling modes visible without changing the directive API.
+            </p>
+          </div>
+        }
+      </div>
+    </ng-template>
+
+    <ng-template dialogModalFooter>
+      <div class="flex flex-wrap gap-2">
+        <button
+          type="button"
+          class="rounded-md border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+          [dialogTriggerFor]="nestedModal"
+        >
+          Nested modal
+        </button>
+        <form method="dialog">
+          <button
+            type="submit"
+            value="form-submit"
+            class="rounded-md border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+          >
+            Form close
+          </button>
+        </form>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button
+          type="button"
+          class="rounded-md border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+          dialogClose="cancel"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="rounded-md bg-teal-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+          dialogClose="save"
+        >
+          Save changes
+        </button>
+      </div>
+    </ng-template>
+  </dialog>
+
+  <dialog
+    dialogModal
+    #nestedModal="dialogModal"
+    [(dialogOpen)]="nestedOpen"
+    dialogSize="sm"
+    dialogPlacement="center"
+    dialogAnimation="slide-up"
+    dialogBackdrop="blur"
+    [dialogCloseAnimationMs]="closeAnimationMs()"
+    [dialogCanClose]="allowClose"
+    (dialogClosed)="lastEvent.set('Nested modal closed with &quot;' + ($event.returnValue || 'empty') + '&quot;')"
+  >
+    <ng-template dialogModalHeader dialogModalHeaderPadding="sm">
+      <div>
+        <h2 class="text-lg font-semibold text-zinc-950">Nested confirmation</h2>
+        <p class="mt-1 text-sm text-zinc-600">This dialog is opened while the settings modal remains in the top-layer stack.</p>
+      </div>
+    </ng-template>
+    <ng-template dialogModalBody dialogModalBodyPadding="sm" [dialogModalBodyScroll]="false">
+      <p class="text-sm text-zinc-600">Confirm the nested action without leaving the primary modal context.</p>
+    </ng-template>
+    <ng-template dialogModalFooter dialogModalFooterPadding="sm" dialogModalFooterLayout="end">
+      <button
+        type="button"
+        class="rounded-md border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+        dialogClose="nested-cancel"
+      >
+        Dismiss
+      </button>
+      <button
+        type="button"
+        class="rounded-md bg-teal-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+        dialogClose="nested-confirm"
+      >
+        Confirm
+      </button>
+    </ng-template>
+  </dialog>
+</main>
